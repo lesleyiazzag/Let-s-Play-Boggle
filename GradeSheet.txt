@@ -1,0 +1,38 @@
+GRADE SHEET FOR CS134 LAB 9 ("Boggle"):
+
+Note that this lab counts as a double lab (worth the grade of two labs).
+
+Task 1:  BoggleLetter
+    * passes all instructor tests
+    * implements all required methods
+    * provides appropriate comments on hard to read code
+    * uses good style with getters, setters
+    * uses helper methods when appropriate
+    * isAdjacent correctly handles all cases
+
+Task 2: BoggleBoard
+    * passes all instructor tests
+    * implements all required methods
+    * provides appropriate comments on hard to read code
+    * uses good style with getters, setters
+    * uses helper methods when appropriate
+    * correctly implements shakeCubes to produce valid game board (no repeated cubes)
+
+Task 3: BoggleGame
+    * correctly implements game logic
+    * provides appropriate comments on hard to read code
+    * uses methods from other classes appropriately
+    * uses good style throughout
+    * uses helper methods to reduce redundant code
+    * correctly handles reset and exit
+    * checks for valid words of the appropriate length
+
+Extra Credit:
+    * Add some comments on added features:
+
+
+Grade:
+
+
+Comments from Graders:
+
