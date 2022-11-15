@@ -44,11 +44,11 @@ class BoggleLetter:
 
     def getRow(self):
         """Returns _col coordinate (int) attribute."""
-        pass
+        return self._row
 
     def getCol(self):
         """Returns _col coordinate (int) attribute."""
-        pass
+        return self._col
 
     def setLetter(self, char):
         """
@@ -62,7 +62,8 @@ class BoggleLetter:
         B
         >>> win.close()
         """
-        pass
+        self._textObj.setText(str(char))
+    
 
     def getLetter(self):
         """
@@ -74,31 +75,31 @@ class BoggleLetter:
         A
         >>> win.close()
         """
-        pass
+        return self._textObj.getText()
 
     def setTextColor(self, color):
         """
         Sets the color of the letters' Text object.
         """
-        pass
+        self._textObj.setTextColor(color)
 
     def getTextColor(self):
         """
         Gets the color of the letter's Text object.
         """
-        pass
+        self._textObj.getTextColor()
 
     def setFillColor(self, color):
         """
         Sets the color of the letters' Rectangle object.
         """
-        pass
+        self._rect.setFillColor(color)
 
     def getFillColor(self):
         """
         Gets the color of the letter's Rectangle object.
         """
-        pass
+        self._rect.getFillColor()
 
     # test for adjacency
     def isAdjacent(self, other):
@@ -125,7 +126,11 @@ class BoggleLetter:
         False
         >>> win.close()
         """
-        pass
+        if other is self:
+            return False
+        else:
+            return abs(self._row - other._row) <= 1 and abs(self._col - other._col) <= 1
+               
 
     def __str__(self):
         """
@@ -148,23 +153,25 @@ if __name__ == "__main__":
     from doctest import testmod
     testmod()
 
-    # # The following code is a larger test.  Uncomment the code
-    # # and run it, visually inspecting the results once you
-    # # are confident that the class is close to complete.
-    #
-    # from board import Board
-    # win = GraphWin("Boggle", 400, 400)
-    # board = Board(win, rows=4, cols=4)
-    #
-    # let1 = BoggleLetter(board, 1, 1, "A")
-    # let2 = BoggleLetter(board, 1, 2)
-    # let2.setLetter('B')
-    # let2.setTextColor("blue")
-    # let2.setFillColor("powder blue")
-    # let3 = BoggleLetter(board, 3, 1, "C", color="red")
-    # let3.setTextColor("dark green")
-    # let3.setFillColor("DarkSeaGreen1")
-    #
-    # # pause for mouse click before exiting
-    # point = win.getMouse()
-    # win.close()
+    # The following code is a larger test.  Uncomment the code
+    # and run it, visually inspecting the results once you
+    # are confident that the class is close to complete.
+    
+    from board import Board
+    win = GraphWin("Boggle", 400, 400)
+    board = Board(win, rows=4, cols=4)
+    
+    let1 = BoggleLetter(board, 1, 1, "A")
+    print(let1.getRow())
+    print(let1.getCol())
+    let2 = BoggleLetter(board, 1, 2)
+    let2.setLetter('B')
+    let2.setTextColor("blue")
+    let2.setFillColor("powder blue")
+    let3 = BoggleLetter(board, 3, 1, "C", color="red")
+    let3.setTextColor("dark green")
+    let3.setFillColor("DarkSeaGreen1")
+    
+    # pause for mouse click before exiting
+    point = win.getMouse()
+    win.close()
