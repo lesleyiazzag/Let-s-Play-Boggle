@@ -36,7 +36,12 @@ class BoggleBoard(Board):
 
         # todo: finish __init__ 
         self._grid = []
-        pass
+        for col in range(self._col):
+            grid_col = []
+            for row in range(self._row):
+                letter = BoggleLetter(self.getBoard(), col, row)
+                grid_col.append(letter)
+        return self._grid.append(grid_col)
 
 
     def getBoggleLetterAtPoint(self, point):
@@ -98,22 +103,22 @@ if __name__ == "__main__":
     from doctest import testmod
     testmod()
 
-    # # Uncomment this code when you are ready to test it!
+    # Uncomment this code when you are ready to test it!
     
-    # # When you are ready to run on different boards,
-    # # insert a call to randomize() here.  BUT you will
-    # # find it much easier to test your code without
-    # # randomizing things!
+    # When you are ready to run on different boards,
+    # insert a call to randomize() here.  BUT you will
+    # find it much easier to test your code without
+    # randomizing things!
     
-    # win = GraphWin("Boggle", 400, 400)
-    # board = BoggleBoard(win)
-    # print(board)
+    win = GraphWin("Boggle", 400, 400)
+    board = BoggleBoard(win)
+    print(board)
     
-    # keepGoing = True
-    # while keepGoing:
-    #     pt = win.getMouse()
-    #     if board.inExit(pt):
-    #         keepGoing = False
-    #     elif board.inGrid(pt):
-    #         (col, row) = board.getPosition(pt)
-    #         print("{} at {}".format(board._grid[col][row], (pt.getX(), pt.getY())))
+    keepGoing = True
+    while keepGoing:
+        pt = win.getMouse()
+        if board.inExit(pt):
+            keepGoing = False
+        elif board.inGrid(pt):
+            (col, row) = board.getPosition(pt)
+            print("{} at {}".format(board._grid[col][row], (pt.getX(), pt.getY())))
