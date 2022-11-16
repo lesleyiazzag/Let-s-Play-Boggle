@@ -114,7 +114,7 @@ class BoggleBoard(Board):
         # index = randomInt(1, 16)
         # smallList = self._cubes[index]
         miniIndex = randomInt(1,6)
-        self._cubes[index][miniIndex]
+        self._cubes[miniIndex]
 
 
 
