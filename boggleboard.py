@@ -33,15 +33,17 @@ class BoggleBoard(Board):
                         [ "E", "H", "I", "N", "P", "S" ],
                         [ "E", "L", "P", "S", "T", "U" ],
                         [ "G", "I", "L", "R", "U", "W" ]]
+ 
+        self._grid = [] #initializes empty list of lists
+        for col in range(self._cols):
+            grid_col = [] #iterate over each column to create the inner lists
+            for row in range(self._rows): #for every instance of row in the columns
+                letter = BoggleLetter(self.getBoard(), col, row) #create new boggle letter
+                grid_col.append(letter) #add empty boggle letters to column
+            self._grid.append(grid_col) #add column to the grid
+        self.shakeCubes()
+        
 
-        # todo: finish __init__ 
-        self._grid = []
-        for col in range(self._col):
-            grid_col = []
-            for row in range(self._row):
-                letter = BoggleLetter(self.getBoard(), col, row)
-                grid_col.append(letter)
-        return self._grid.append(grid_col)
 
 
     def getBoggleLetterAtPoint(self, point):
@@ -61,14 +63,21 @@ class BoggleBoard(Board):
         True
         >>> win.close()
         """
-        pass
+        if self.inGrid(point):
+            (col, row) = self.getPosition(point)
+            return self._grid[col][row]
+        else:
+            return None
 
     def resetColors(self):
         """
         "Unclicks" all boggle letters on the board without changing any
         other attributes.  (Change letter colors back to default values.)
         """
-        pass
+        for col in range(self._cols):
+                for row in range(self._rows):
+                    self._textObj.setTextColor('black')
+                    self._rect.setFillColor('white')
 
     def reset(self):
         """
@@ -76,13 +85,38 @@ class BoggleBoard(Board):
         clears all text areas (right, lower, upper) on board
         and resets the letters on board by calling shakeCubes.
         """
-        pass
+        self.resetColors()
+        self.setStringToTextArea('')
+        self.setStringToUpperText('')
+        self.setStringToLowerText('')
+        self.shakeCubes()
 
     def shakeCubes(self):
         """
         Shakes the boggle board and sets letters as described by the handout.
         """
-        pass
+        faceList = []
+        shuffledVersion = shuffled(self._cubes)
+        for shuffledVersion in self._cubes:
+            for face in shuffledVersion:
+                face = shuffledVersion[randomInt(1,6)]
+                faceList.append(face)
+        
+        for face in faceList:
+            for col in self._grid:
+                for row in self._grid:
+                    self._grid.append(face)
+                
+                
+
+
+
+        # index = randomInt(1, 16)
+        # smallList = self._cubes[index]
+        miniIndex = randomInt(1,6)
+        self._cubes[index][miniIndex]
+
+
 
     def __str__(self):
         """
@@ -122,3 +156,5 @@ if __name__ == "__main__":
         elif board.inGrid(pt):
             (col, row) = board.getPosition(pt)
             print("{} at {}".format(board._grid[col][row], (pt.getX(), pt.getY())))
+        elif board.inReset(pt):
+            board.reset()
