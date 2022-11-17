@@ -74,10 +74,10 @@ class BoggleBoard(Board):
         "Unclicks" all boggle letters on the board without changing any
         other attributes.  (Change letter colors back to default values.)
         """
-        for col in range(self._cols):
-                for row in range(self._rows):
-                    self._textObj.setTextColor('black')
-                    self._rect.setFillColor('white')
+        for col in self._grid:
+            for row in col:
+                row.setTextColor('black')
+                row.setFillColor('white')
 
     def reset(self):
         """
@@ -97,24 +97,17 @@ class BoggleBoard(Board):
         """
         faceList = []
         shuffledVersion = shuffled(self._cubes)
-        for shuffledVersion in self._cubes:
-            for face in shuffledVersion:
-                face = shuffledVersion[randomInt(1,6)]
-                faceList.append(face)
-        
-        for face in faceList:
-            for col in self._grid:
-                for row in self._grid:
-                    self._grid.append(face)
+        for dieList in shuffledVersion:
+            face = dieList[randomInt(0, 5)]
+            faceList.append(face)
+          
+        x = 0
+        for col in range(self._cols):
+            for row in range(self._rows):
+                face = faceList[x]
+                x += 1
+                self._grid[col][row] = BoggleLetter(self.getBoard(), col, row, face)
                 
-                
-
-
-
-        # index = randomInt(1, 16)
-        # smallList = self._cubes[index]
-        miniIndex = randomInt(1,6)
-        self._cubes[miniIndex]
 
 
 

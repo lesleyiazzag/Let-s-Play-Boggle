@@ -128,7 +128,7 @@ class BoggleLetter:
         """
         if other is self:
             return False
-        else:
+        else: # If the row and column coordinates of each letter differ by at most 1:
             return abs(self._row - other._row) <= 1 and abs(self._col - other._col) <= 1
                
 
