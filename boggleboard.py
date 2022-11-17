@@ -63,6 +63,7 @@ class BoggleBoard(Board):
         True
         >>> win.close()
         """
+        # If we click inside of the grid, retrieve the grid coordinates of the click
         if self.inGrid(point):
             (col, row) = self.getPosition(point)
             return self._grid[col][row]
@@ -74,6 +75,7 @@ class BoggleBoard(Board):
         "Unclicks" all boggle letters on the board without changing any
         other attributes.  (Change letter colors back to default values.)
         """
+        # Go through every square on the grid and reset text and square colors to default.
         for col in self._grid:
             for row in col:
                 row.setTextColor('black')
@@ -85,6 +87,7 @@ class BoggleBoard(Board):
         clears all text areas (right, lower, upper) on board
         and resets the letters on board by calling shakeCubes.
         """
+        # Reset colors, clear all text areas, and shake the cubes for a new pattern.
         self.resetColors()
         self.setStringToTextArea('')
         self.setStringToUpperText('')
@@ -96,14 +99,19 @@ class BoggleBoard(Board):
         Shakes the boggle board and sets letters as described by the handout.
         """
         faceList = []
+        # Shuffle the lists representing cubes in the list of lists self._cubes
         shuffledVersion = shuffled(self._cubes)
+        # Iterating through each die
         for dieList in shuffledVersion:
+            # Call a random ace for each die
             face = dieList[randomInt(0, 5)]
+            # Append the random face to a list of faces
             faceList.append(face)
           
         x = 0
         for col in range(self._cols):
             for row in range(self._rows):
+                # For each coordinate in the grid, ive it a face value from the list of faces.
                 face = faceList[x]
                 x += 1
                 self._grid[col][row] = BoggleLetter(self.getBoard(), col, row, face)
