@@ -103,7 +103,7 @@ class BoggleBoard(Board):
         shuffledVersion = shuffled(self._cubes)
         # Iterating through each die
         for dieList in shuffledVersion:
-            # Call a random ace for each die
+            # Call a random face for each die
             face = dieList[randomInt(0, 5)]
             # Append the random face to a list of faces
             faceList.append(face)
@@ -112,7 +112,7 @@ class BoggleBoard(Board):
         for col in range(self._cols):
             for row in range(self._rows):
                 # For each coordinate in the grid, ive it a face value from the list of faces.
-                face = faceList[x]
+                face = faceList[x] 
                 x += 1
                 self._grid[col][row] = BoggleLetter(self.getBoard(), col, row, face)
                 
