@@ -63,9 +63,10 @@ class BoggleBoard(Board):
         True
         >>> win.close()
         """
-        # If we click inside of the grid, retrieve the grid coordinates of the click
+        # If we click inside of the grid... 
         if self.inGrid(point):
             (col, row) = self.getPosition(point)
+            # retrieve the grid coordinates of the click
             return self._grid[col][row]
         else:
             return None
@@ -111,7 +112,7 @@ class BoggleBoard(Board):
         x = 0
         for col in range(self._cols):
             for row in range(self._rows):
-                # For each coordinate in the grid, ive it a face value from the list of faces.
+                # For each coordinate in the grid, give it a face value from the list of faces.
                 face = faceList[x] 
                 x += 1
                 self._grid[col][row] = BoggleLetter(self.getBoard(), col, row, face)
