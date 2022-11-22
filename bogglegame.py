@@ -15,6 +15,8 @@ class BoggleGame:
         """
         # set up the set of valid words we can match
         self._validWords = self.__readLexicon()
+        self._board = BoggleBoard(win)
+        self._selectedLetters = []
 
         # init other attributes here.
 
@@ -38,16 +40,28 @@ class BoggleGame:
         # you are free to do things differently if you prefer.
 
         # step 1: check for exit button and return False if clicked
-        return False
+        if self._board.inExit(point):
+            return False
 
         # step 2: check for reset button and reset
+        elif self._board.inReset(point):
+            self._board.reset()
+            self._board.setStringToUpperText("")
+            return True
+        
 
         # step 3: check if click is on a cell in the grid
+        elif self._board.inGrid(point):
 
           # get BoggleLetter at point
+          boglet = self._board.getBoggleLetterAtPoint(point)
 
           # if this is the first letter in a word being constructed,
           # add letter and display it on lower text of board
+          if len(self._selectedLetters) == 0:
+              self._selectedLetters.append(boglet)
+              self._board.setStringToLowerText(boglet.getLetter())
+        return True
 
           # else if adding a letter to a non-empty word, make sure it's adjacent
           # and update state

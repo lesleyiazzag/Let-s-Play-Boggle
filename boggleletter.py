@@ -87,7 +87,7 @@ class BoggleLetter:
         """
         Gets the color of the letter's Text object.
         """
-        self._textObj.getTextColor()
+        return self._textObj.getTextColor()
 
     def setFillColor(self, color):
         """
@@ -99,7 +99,7 @@ class BoggleLetter:
         """
         Gets the color of the letter's Rectangle object.
         """
-        self._rect.getFillColor()
+        return self._rect.getFillColor()
 
     # test for adjacency
     def isAdjacent(self, other):
