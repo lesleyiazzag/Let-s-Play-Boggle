@@ -17,6 +17,7 @@ class BoggleGame:
         self._validWords = self.__readLexicon()
         self._board = BoggleBoard(win)
         self._selectedLetters = []
+        self._foundWords = []
 
         # init other attributes here.
 
@@ -53,24 +54,34 @@ class BoggleGame:
         # step 3: check if click is on a cell in the grid
         elif self._board.inGrid(point):
 
-          # get BoggleLetter at point
-          boglet = self._board.getBoggleLetterAtPoint(point)
+            # get BoggleLetter at point
+            boglet = self._board.getBoggleLetterAtPoint(point)
 
-          # if this is the first letter in a word being constructed,
-          # add letter and display it on lower text of board
-          if len(self._selectedLetters) == 0:
-              self._selectedLetters.append(boglet)
-              self._board.setStringToLowerText(boglet.getLetter())
-        return True
+            # if this is the first letter in a word being constructed,
+            # add letter and display it on lower text of board
+            if len(self._selectedLetters) == 0:
+                self._selectedLetters.append(boglet)
+                self._board.setStringToLowerText(boglet.getLetter())
+            
+            # else if clicked on same letter as last time, end word and check for validity
+            elif boglet == self._selectedLetters[-1]: 
+                if "".join(self._selectedLetters) in self._validWords:
+                    # clear lowertext, colors, and selectedLetters
+                    # append to foundWords and maybe side text
+                    pass
 
-          # else if adding a letter to a non-empty word, make sure it's adjacent
-          # and update state
 
-          # else if clicked on same letter as last time, end word and check for validity
+            # else if adding a letter to a non-empty word, make sure it's adjacent
+            # and update state
+            elif boglet.isAdjacent(self._selectedLetters[-1]):
+                pass
 
-          # else if clicked anywhere else, reset the state to an empty word.
+            # else if clicked anywhere else, reset the state to an empty word.
+            else:
+                pass
 
         # return True to indicate we want to keep playing
+        return True
 
 if __name__ == '__main__':
 
