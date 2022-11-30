@@ -64,24 +64,26 @@ class BoggleGame:
             # add letter and display it on lower text of board
             if len(self._selectedLetters) == 0:
                 self._selectedLetters.append(boglet)
-                self._board.setStringToLowerText( self._board.getStringFromLowerText() + boglet.getLetter())
+                self._board.setStringToLowerText(self._board.getStringFromLowerText() + boglet.getLetter())
             
             # else if clicked on same letter as last time, end word and check for validity
             elif boglet == self._selectedLetters[-1]: 
                 bogletString = "".join([boglet.getLetter() for boglet in self._selectedLetters])
                 if bogletString in self._validWords and bogletString not in self._foundWords:
-                    self._foundWords.append(bogletString) # append to foundWords and side text
-                    wordsString = '\n'.join(self._foundWords)
+                    self._foundWords.append(bogletString) # append to foundWords and side text of game
+                    # Add every valid word that is found gradually to the side text of game
+                    wordsString = '\n'.join(self._foundWords) 
                     self._board.setStringToTextArea(wordsString)
-                self._board.resetColors()# clear lowertext, colors, and selectedLetters
+                self._board.resetColors() # clear lowertext, colors, and selectedLetters
                 self._board.setStringToLowerText('')
                 self._selectedLetters = []
                     
             # else if adding a letter to a non-empty word, make sure it's adjacent
             # and update state
-            elif boglet.isAdjacent(self._selectedLetters[-1]):
+            elif boglet.isAdjacent(self._selectedLetters[-1]) and boglet not in self._selectedLetters:
                 self._selectedLetters.append(boglet)
-                self._board.setStringToLowerText( self._board.getStringFromLowerText() + boglet.getLetter())
+                self._board.setStringToLowerText(self._board.getStringFromLowerText() + boglet.getLetter())
+                # Set the last boggle letter clicked to green and set the current one clicked to blue
                 self._selectedLetters[-2].setFillColor('light green')
                 self._selectedLetters[-2].setTextColor('green')
                 boglet.setFillColor('powder blue')
