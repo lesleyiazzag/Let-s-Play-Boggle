@@ -47,7 +47,8 @@ class BoggleGame:
         # step 2: check for reset button and reset
         elif self._board.inReset(point):
             self._board.reset()
-            self._board.setStringToUpperText("")
+            self._selectedLetters = []
+            self._foundWords = []
             return True
         
 
@@ -56,29 +57,41 @@ class BoggleGame:
 
             # get BoggleLetter at point
             boglet = self._board.getBoggleLetterAtPoint(point)
+            boglet.setFillColor('powder blue')
+            boglet.setTextColor('blue')
 
             # if this is the first letter in a word being constructed,
             # add letter and display it on lower text of board
             if len(self._selectedLetters) == 0:
                 self._selectedLetters.append(boglet)
-                self._board.setStringToLowerText(boglet.getLetter())
+                self._board.setStringToLowerText( self._board.getStringFromLowerText() + boglet.getLetter())
             
             # else if clicked on same letter as last time, end word and check for validity
             elif boglet == self._selectedLetters[-1]: 
-                if "".join(self._selectedLetters) in self._validWords:
-                    # clear lowertext, colors, and selectedLetters
-                    # append to foundWords and maybe side text
-                    pass
-
-
+                bogletString = "".join([boglet.getLetter() for boglet in self._selectedLetters])
+                if bogletString in self._validWords and bogletString not in self._foundWords:
+                    self._foundWords.append(bogletString) # append to foundWords and side text
+                    wordsString = '\n'.join(self._foundWords)
+                    self._board.setStringToTextArea(wordsString)
+                self._board.resetColors()# clear lowertext, colors, and selectedLetters
+                self._board.setStringToLowerText('')
+                self._selectedLetters = []
+                    
             # else if adding a letter to a non-empty word, make sure it's adjacent
             # and update state
             elif boglet.isAdjacent(self._selectedLetters[-1]):
-                pass
+                self._selectedLetters.append(boglet)
+                self._board.setStringToLowerText( self._board.getStringFromLowerText() + boglet.getLetter())
+                self._selectedLetters[-2].setFillColor('light green')
+                self._selectedLetters[-2].setTextColor('green')
+                boglet.setFillColor('powder blue')
+                boglet.setTextColor('blue')
 
             # else if clicked anywhere else, reset the state to an empty word.
             else:
-                pass
+                self._board.resetColors()
+                self._board.setStringToLowerText('')
+                self._selectedLetters = []
 
         # return True to indicate we want to keep playing
         return True
