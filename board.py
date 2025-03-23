@@ -17,7 +17,7 @@ class Board:
 
     __slots__ = [ '_xInset', '_yInset', '_rows', '_cols', '_size', \
                   '_win', '_exitButton', '_resetButton', \
-                  '_textArea', '_lowerWord', '_upperWord']
+                  '_textArea', '_lowerWord', '_upperWord', '_foundWords', '_scroll_position', '_max_visible_words']
 
     def __init__(self, win, xInset=50, yInset=50, rows=3, cols=3, size=50):
         # update class attributes
@@ -25,6 +25,12 @@ class Board:
         self._rows = rows; self._cols = cols
         self._size = size
         self._win = win
+
+        # Scroll-related attributes
+        self._foundWords = []
+        self._scroll_position = 0  # Starting at the top
+        self._max_visible_words = 15  # Max number of words to display at once
+        
         self.drawBoard()
 
     # getter methods for attributes
@@ -61,6 +67,7 @@ class Board:
     def _makeRect(self, point1, point2, fillcolor="white", text=""):
         """Creates a rectangle with text in the center"""
         rect = Rectangle(point1, point2, fillcolor)
+        rect.setWidth(2)
         rect.draw(self._win)
         text = Text(rect.getCenter(), text)
         text.setTextColor("black")
@@ -71,9 +78,9 @@ class Board:
         """Draw the text areas to the right/lower/upper side of main grid"""
         # draw main text area (right of grid)
         self._textArea = self.__makeTextArea(Point(self._xInset * self._rows + self._size * 2,
-                                                   self._yInset + 50), 14)
+                                                   self._yInset + 165), 14, color="#3F7D58")
         #draw the text area below grid
-        self._lowerWord = self.__makeTextArea(Point(160, 275))
+        self._lowerWord = self.__makeTextArea(Point(160, 275), color="#EF9651")
         #draw the text area above grid
         self._upperWord = self.__makeTextArea(Point(160, 25), color="red")
 
@@ -88,7 +95,7 @@ class Board:
                 p2 = Point(self._xInset + self._size * (x + 1), 
                            self._yInset + self._size * (y + 1))
                 # create rectangle and add to graphical window
-                self._makeRect(p1, p2)
+                self._makeRect(p1, p2, fillcolor="#F5ECE0")
 
                 #Text(Point(self._xInset + 15 + self._size * x, \
                 #           self._yInset + 15+ self._size * y), \
@@ -96,14 +103,14 @@ class Board:
 
     def __drawButtons(self):
         """Create reset and exit buttons"""
-        p1 = Point(50, 300); p2 = Point(130, 350)
+        p1 = Point(50, 300); p2 = Point(150, 350)
         self._resetButton = self._makeRect(p1, p2, text="RESET")
         p3 = Point(170, 300); p4 = Point(250, 350)
         self._exitButton = self._makeRect(p3, p4, text="EXIT")        
 
     def drawBoard(self):
         """Create the board with the grid, text areas, and buttons"""
-        self._win.setBackground("white smoke")
+        self._win.setBackground("#F5ECE0")
         self.__drawGrid()
         self.__drawTextAreas()
         self.__drawButtons()
@@ -179,7 +186,16 @@ class Board:
         '''
         Sets text to text area to right of grid. Overwrites existing text.
         '''
-        self._textArea.setText(text)
+        words_list = text.split("\n")  # Split words into list
+        start_idx = self._scroll_position
+        end_idx = min(self._scroll_position + self._max_visible_words, len(words_list))
+        
+        # Get only the portion of words that should be visible
+        visible_words = "\n".join(words_list[start_idx:end_idx])
+
+        # Update the Text area with visible words
+        self._textArea.setText(visible_words)
+        #self._textArea.setText(text)
 
     # add text to text area below grid
     def getStringFromLowerText(self):
@@ -209,6 +225,23 @@ class Board:
         Set text to text area above grid. Overwrites existing text.
         '''
         self._upperWord.setText(text)
+
+    def scrollWordsUp(self):
+        """
+        Scroll the word list upwards by adjusting the scroll position.
+        """
+        if len(self.getStringFromTextArea().split("\n")) > self.max_visible_words:
+            self.scroll_position = min(self.scroll_position + 1, len(self.getStringFromTextArea().split("\n")) - self.max_visible_words)
+            self.setStringToTextArea(self.getStringFromTextArea())
+
+    def scrollWordsDown(self):
+        """
+        Scroll the word list downwards by adjusting the scroll position.
+        """
+        if self.scroll_position > 0:
+            self.scroll_position -= 1
+            self.setStringToTextArea(self.getStringFromTextArea())
+
 
 if __name__ == "__main__":
     win = GraphWin("Board", 400, 400)

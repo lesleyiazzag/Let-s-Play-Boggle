@@ -17,6 +17,10 @@ class BoggleBoard(Board):
     def __init__(self, win):
         super().__init__(win, rows=4, cols=4)
 
+        self._foundWords = []  # Track found words
+        self._max_visible_words = 15  # Max number of words that can be visible at once
+        self._scroll_position = 0
+
         self._cubes =  [[ "A", "A", "C", "I", "O", "T" ],
                         [ "T", "Y", "A", "B", "I", "L" ],
                         [ "J", "M", "O", "Qu", "A", "B"],
@@ -43,8 +47,45 @@ class BoggleBoard(Board):
             self._grid.append(grid_col) #add column to the grid
         self.shakeCubes()
         
+    def addFoundWord(self, word):
+        """
+        Add a found word to the list, update the text area, and trigger scroll functionality.
+        """
+        if word not in self._foundWords:
+            self._foundWords.append(word)
+        if len(self._foundWords) > self._max_visible_words:
+            self._scroll_position += 1
+        self.updateTextArea()
 
+    def updateTextArea(self):
+        """
+        This method updates the text area to display the current found words list
+        based on the scroll position.
+        """
+        # Get the words to display (consider scroll position)
+        visible_words = self._foundWords[self._scroll_position:self._scroll_position + self._max_visible_words]
 
+        # Join the words into a string
+        wordsString = '\n'.join(visible_words)
+
+        # Update the text area
+        self.setStringToTextArea(wordsString)
+
+    def scrollWordsUp(self):
+        """
+        Override the scroll behavior to update the text area with new words.
+        """
+        if self._scroll_position > 0:
+            self._scroll_position -= 1
+            self.updateTextArea() 
+
+    def scrollWordsDown(self):
+        """
+        Scroll down the word list if the user scrolls down.
+        """
+        if self._scroll_position + self._max_visible_words < len(self._foundWords):
+            self._scroll_position += 1
+            self.updateTextArea() 
 
     def getBoggleLetterAtPoint(self, point):
         """
@@ -90,6 +131,8 @@ class BoggleBoard(Board):
         """
         # Reset colors, clear all text areas, and shake the cubes for a new pattern.
         self.resetColors()
+        self._foundWords = [] 
+        self._scroll_position = 0
         self.setStringToTextArea('')
         self.setStringToUpperText('')
         self.setStringToLowerText('')

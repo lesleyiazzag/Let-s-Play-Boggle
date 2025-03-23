@@ -71,6 +71,7 @@ class BoggleGame:
                 bogletString = "".join([boglet.getLetter() for boglet in self._selectedLetters])
                 if bogletString in self._validWords and bogletString not in self._foundWords:
                     self._foundWords.append(bogletString) # append to foundWords and side text of game
+                    self._board.addFoundWord(bogletString)
                     # Add every valid word that is found gradually to the side text of game
                     wordsString = '\n'.join(self._foundWords) 
                     self._board.setStringToTextArea(wordsString)
